@@ -1,0 +1,35 @@
+name: 🚀 Performance Issue / Performans Sorunu
+description: Performansa yönelik bir problem mi var? Buradan bildir.
+title: "[PERF] "
+labels: [performance]
+assignees: []
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 🐢 Yavaşlık veya performans problemi nedir?
+      placeholder: Uygulama yavaş mı çalışıyor? Render süresi mi uzun?
+
+  - type: textarea
+    id: location
+    attributes:
+      label: 📍 Nerede hissediliyor?
+      placeholder: Sayfa adı, komponent, işlem
+
+  - type: textarea
+    id: metrics
+    attributes:
+      label: 📊 Ölçüm var mı?
+      placeholder: Lighthouse skoru, TTI, FPS, load süresi gibi
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 🔧 İyileştirme öneriniz?
+      placeholder: Ne yapılabilir?
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📎 Ek bilgi

@@ -1,0 +1,35 @@
+name: ✨ Feature Request / Özellik Talebi
+description: Yeni bir özellik öneriniz mi var? Buradan paylaşabilirsiniz.
+title: "[FEATURE] "
+labels: [enhancement]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        🧠 Yeni fikirlerinizi bizimle paylaştığınız için teşekkürler!
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: 🔍 Özellik özeti / Summary of the feature
+      description: Ne istiyorsunuz? / What would you like to see?
+      placeholder: Örneğin, kullanıcılar şunu yapabilmeli...
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 🚀 Neden gerekli? / Why is this needed?
+      placeholder: Bu özellik neden önemli? Hangi sorunu çözüyor?
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔁 Alternatif çözümler / Alternative Solutions
+      placeholder: Bu özelliğe alternatif olarak ne yapılabilir?
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📎 Ek bilgiler / Additional context

@@ -1,0 +1,69 @@
+name: 🔒 Security Scan
+
+# PR veya push olduğunda çalıştır
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 3 * * 1' # Her pazartesi 03:00'te otomatik tarama
+
+jobs:
+  security:
+    name: Dependency & Code Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      # --------------------------------------------
+      # Repo checkout / Kodu çek
+      # --------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --------------------------------------------
+      # Node.js ortamını kur / Setup Node.js
+      # --------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      # --------------------------------------------
+      # pnpm kurulumu / Install pnpm
+      # --------------------------------------------
+      - name: Install pnpm
+        run: npm install -g pnpm@8
+
+      # --------------------------------------------
+      # Bağımlılıkları yükle / Install dependencies
+      # --------------------------------------------
+      - name: Install dependencies
+        run: pnpm install
+
+      # --------------------------------------------
+      # pnpm audit ile güvenlik taraması
+      # Audit dependencies using pnpm audit
+      # --------------------------------------------
+      - name: Run pnpm audit
+        run: pnpm audit --json || true
+
+      # --------------------------------------------
+      # ESLint ile güvenlik odaklı tarama
+      # Security lint with eslint-plugin-security
+      # --------------------------------------------
+      - name: ESLint security scan
+        run: pnpm lint
+
+      # --------------------------------------------
+      # CodeQL taraması / CodeQL analysis
+      # --------------------------------------------
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+          queries: security-extended
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v2

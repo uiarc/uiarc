@@ -1,0 +1,56 @@
+name: 💤 Mark stale issues and PRs
+
+on:
+  schedule:
+    - cron: "0 2 * * *"  # Her gün saat 02:00'de çalışır / Runs daily at 2 AM UTC
+  workflow_dispatch:      # Elle tetikleme desteği / Allow manual trigger
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mark stale issues and pull requests
+        uses: actions/stale@v9
+        with:
+          # 🕓 Konular için pasif kalma süresi (gün cinsinden)
+          days-before-stale: 14
+          # 🕓 PR’lar için pasif kalma süresi
+          days-before-pr-stale: 14
+
+          # ❌ Stale olarak işaretlendikten kaç gün sonra kapatılsın
+          days-before-close: 7
+          days-before-pr-close: 7
+
+          # 🏷️ "stale" etiketi kullanılacak
+          stale-issue-label: "stale"
+          stale-pr-label: "stale"
+
+          # 💬 Stale olarak işaretlenince verilecek mesaj
+          stale-issue-message: |
+            This issue has been automatically marked as stale because it has not had recent activity. It will be closed in 7 days if no further updates occur. Thank you!
+
+            Bu konu uzun süredir aktif değil, 7 gün içinde kapanacaktır. Güncelleme yaparsanız açık kalacaktır. 🙏
+
+          stale-pr-message: |
+            This pull request has been marked as stale due to inactivity. It will be closed in 7 days unless it is updated.
+
+            Bu PR bir süredir güncellenmediği için "stale" olarak işaretlendi. 7 gün içinde kapanacaktır.
+
+          # ❌ Stale konulara yeni yorum gelirse etiketi kaldır
+          remove-stale-when-updated: true
+          remove-stale-when-labeled: true
+
+          # 📌 Bazı etiketlere sahip konular asla stale olmaz
+          exempt-issue-labels: "pinned,security,discussion"
+          exempt-pr-labels: "do-not-close,wip"
+
+          # ✅ Yorum varsa bile stale olur (false yaparsan yorum varsa etkilenmez)
+          only-labels: ""
+
+          # PR'lar da mı kontrol edilsin? (true: evet)
+          enable-prs: true

@@ -1,0 +1,69 @@
+name: 🎨 Visual Regression Test
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: 18
+  PNPM_VERSION: 8
+
+jobs:
+  visual-regression:
+    name: Run Visual Regression Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # --------------------------------------------
+      # Kodu çek / Checkout code
+      # --------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --------------------------------------------
+      # Node ortamı kur / Setup Node.js
+      # --------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      # --------------------------------------------
+      # pnpm yükle / Install pnpm
+      # --------------------------------------------
+      - name: Install pnpm
+        run: npm install -g pnpm@${{ env.PNPM_VERSION }}
+
+      # --------------------------------------------
+      # Bağımlılıkları yükle / Install dependencies
+      # --------------------------------------------
+      - name: Install dependencies
+        run: pnpm install
+
+      # --------------------------------------------
+      # Uygulamayı başlat / Start the app (örnek)
+      # --------------------------------------------
+      - name: Start application
+        run: |
+          pnpm build
+          pnpm start & # arka planda başlat
+          sleep 5 # uygulamanın ayağa kalkmasını bekle
+
+      # --------------------------------------------
+      # Playwright testlerini çalıştır / Run tests
+      # --------------------------------------------
+      - name: Run visual regression tests
+        run: pnpm playwright test --project=chromium
+
+      # --------------------------------------------
+      # Screenshot farklılıklarını upload et
+      # Upload screenshots if test fails
+      # --------------------------------------------
+      - name: Upload failed screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failed-screenshots
+          path: test-results/

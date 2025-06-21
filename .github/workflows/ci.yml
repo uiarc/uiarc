@@ -1,46 +1,68 @@
-name: CI
+name: CI Pipeline
 
+# Bu workflow, push ve pull request olduğunda çalışır
+# This workflow runs on every push or pull request
 on:
   push:
-    branches:
-      - main
+    branches: [main, develop]
   pull_request:
+    branches: [main, develop]
 
-permissions:
-  actions: read
-  contents: read
+# Ortam değişkenleri (pnpm ve Node sürümü için)
+env:
+  NODE_VERSION: 18
+  PNPM_VERSION: 8
 
 jobs:
-  main:
+  install-and-test:
+    name: Install & Lint & Test
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-        with:
-          filter: tree:0
-          fetch-depth: 0
+      # Kaynak kodu checkout yap
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
+      # Node.js kurulumu
+      # Set up Node.js
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
         with:
-          version: 9.8.0
-          run_install: false
-
-      # This enables task distribution via Nx Cloud
-      # Run this command as early as possible, before dependencies are installed
-      # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
-      # Uncomment this line to enable task distribution
-      # - run: pnpm dlx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
-
-      # Cache node_modules
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
-      - uses: nrwl/nx-set-shas@v4
+      # pnpm kurulumu
+      # Install pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm@${{ env.PNPM_VERSION }}
 
-      # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
-      # - run: pnpm exec nx-cloud record -- echo Hello World
-      # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
-      - run: pnpm exec nx affected -t lint test build
+      # Bağımlılıkları yükle
+      # Install dependencies
+      - name: Install dependencies with pnpm
+        run: pnpm install
+
+      # Nx cache restore (performans için)
+      # Restore Nx computation cache
+      - name: Restore Nx cache
+        uses: actions/cache@v4
+        with:
+          path: .nx/cache
+          key: ${{ runner.os }}-nx-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-nx-
+
+      # Kod kalitesi denetimi
+      # Lint the codebase
+      - name: Lint
+        run: pnpm nx format:check && pnpm nx affected:lint --all
+
+      # Testleri çalıştır (unit/integration)
+      # Run tests (unit/integration)
+      - name: Run Tests
+        run: pnpm nx run-many --target=test --all --parallel=3
+
+      # Projeleri derle
+      # Build all apps/libs (for deploy sanity)
+      - name: Build apps and libs
+        run: pnpm nx run-many --target=build --all --parallel=3

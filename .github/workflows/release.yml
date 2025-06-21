@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+
+# Ortak ortam değişkenleri / Common environment variables
+env:
+  NODE_VERSION: 18
+  PNPM_VERSION: 8
+
+jobs:
+  release:
+    name: Semantic Release & Changelog
+    runs-on: ubuntu-latest
+
+    steps:
+      # --------------------------------------------
+      # Kodu checkout yap / Checkout the repository
+      # --------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # semantic-release için tam git geçmişi gerekir
+
+      # --------------------------------------------
+      # Node.js ortamını hazırla / Setup Node.js
+      # --------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      # --------------------------------------------
+      # pnpm kurulumu / Install pnpm
+      # --------------------------------------------
+      - name: Install pnpm
+        run: npm install -g pnpm@${{ env.PNPM_VERSION }}
+
+      # --------------------------------------------
+      # Proje bağımlılıklarını yükle / Install dependencies
+      # --------------------------------------------
+      - name: Install dependencies
+        run: pnpm install
+
+      # --------------------------------------------
+      # semantic-release çalıştır / Run semantic-release
+      # --------------------------------------------
+      - name: Release with semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub Releases için gerekli
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}       # Eğer NPM publish yapılacaksa gerekli
+        run: npx semantic-release

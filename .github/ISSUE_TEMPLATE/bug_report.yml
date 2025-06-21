@@ -1,0 +1,59 @@
+name: 🐛 Bug Report / Hata Bildirimi
+description: Uygulamada bir hata tespit ettiysen buradan bildirebilirsin.
+title: "[BUG] "
+labels: [bug]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Teşekkürler!** Hata bildirdiğiniz için teşekkür ederiz.
+        Please provide as much detail as possible.
+
+  - type: input
+    id: affected-area
+    attributes:
+      label: 🔍 Hangi sayfa/bölümde oldu? / Where did the bug occur?
+      placeholder: Örnek: Anasayfa, kullanıcı profili
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📋 Açıklama / Description
+      description: Hatanın ne olduğunu detaylıca açıklayın. / Describe the bug in detail.
+      placeholder: Ne olması gerekiyordu, ne oldu?
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 🔁 Hata adımları / Steps to reproduce
+      description: Hatanın nasıl oluştuğunu adım adım yazın.
+      placeholder: |
+        1. '...' butonuna tıkla
+        2. '...' alanına bir şey yaz
+        3. Hata oluştu
+
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: 🌐 Tarayıcı / Browser
+      multiple: true
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Mobile (iOS/Android)
+
+  - type: input
+    id: version
+    attributes:
+      label: 📦 Proje Versiyonu / App Version
+      placeholder: Örn: 1.0.0
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📎 Ek bilgiler / Additional Info
+      placeholder: Hatanın ekran görüntüsü, konsol hatası, loglar vb.

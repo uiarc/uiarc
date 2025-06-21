@@ -1,0 +1,75 @@
+name: ♿ Accessibility Test
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: 18
+  PNPM_VERSION: 8
+
+jobs:
+  accessibility:
+    name: Run Accessibility Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # ----------------------------------------
+      # Kodu checkout yap / Checkout the code
+      # ----------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ----------------------------------------
+      # Node.js ortamını kur / Setup Node.js
+      # ----------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      # ----------------------------------------
+      # pnpm yükle / Install pnpm
+      # ----------------------------------------
+      - name: Install pnpm
+        run: npm install -g pnpm@${{ env.PNPM_VERSION }}
+
+      # ----------------------------------------
+      # Bağımlılıkları yükle / Install dependencies
+      # ----------------------------------------
+      - name: Install dependencies
+        run: pnpm install
+
+      # ----------------------------------------
+      # Uygulamayı başlat / Start the app
+      # ----------------------------------------
+      - name: Build and start the app
+        run: |
+          pnpm build
+          pnpm preview &  # arka planda başlat
+          sleep 5
+
+      # ----------------------------------------
+      # Erişilebilirlik testlerini çalıştır / Run a11y tests
+      # ----------------------------------------
+      - name: Run accessibility audit using Lighthouse
+        run: |
+          npm install -g lighthouse
+          lighthouse http://localhost:4173 \
+            --only-categories=accessibility \
+            --output=json \
+            --output-path=./a11y-report.json \
+            --chrome-flags="--headless"
+
+      # ----------------------------------------
+      # Raporu artifact olarak yükle / Upload report
+      # ----------------------------------------
+      - name: Upload accessibility report
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-report
+          path: ./a11y-report.json

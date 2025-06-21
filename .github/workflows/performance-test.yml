@@ -1,0 +1,74 @@
+name: 🚀 Performance Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  # Elle manuel tetikleme / Manual run
+
+env:
+  NODE_VERSION: 18
+  PNPM_VERSION: 8
+
+jobs:
+  performance-test:
+    name: Run Performance Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # ----------------------------------------------------
+      # Kodu çek / Checkout the repository
+      # ----------------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ----------------------------------------------------
+      # Node.js ortamını kur / Setup Node.js
+      # ----------------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      # ----------------------------------------------------
+      # pnpm kurulumu / Install pnpm
+      # ----------------------------------------------------
+      - name: Install pnpm
+        run: npm install -g pnpm@${{ env.PNPM_VERSION }}
+
+      # ----------------------------------------------------
+      # Bağımlılıkları yükle / Install dependencies
+      # ----------------------------------------------------
+      - name: Install dependencies
+        run: pnpm install
+
+      # ----------------------------------------------------
+      # Uygulamayı build et / Build the project
+      # ----------------------------------------------------
+      - name: Build project
+        run: pnpm nx run-many --target=build --all
+
+      # ----------------------------------------------------
+      # Performans testlerini çalıştır / Run perf tests
+      # ----------------------------------------------------
+      - name: Run Lighthouse tests (example)
+        run: |
+          pnpm build
+          npx lighthouse http://localhost:3000 \
+            --output=json \
+            --output-path=./lighthouse-report.json \
+            --quiet \
+            --chrome-flags="--headless"
+
+      # ----------------------------------------------------
+      # Test sonuçlarını artifact olarak sakla / Upload results
+      # ----------------------------------------------------
+      - name: Upload performance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: ./lighthouse-report.json

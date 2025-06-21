@@ -1,0 +1,63 @@
+name: CD Pipeline
+
+# Deploy işlemleri sadece main veya release/* branch'lerine yapılır
+# Deployment happens only on main or release/* branches
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+
+env:
+  NODE_VERSION: 18
+  PNPM_VERSION: 8
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # Reponun kodunu çek
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Node.js ortamını kur
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      # pnpm kurulumu
+      - name: Install pnpm
+        run: npm install -g pnpm@${{ env.PNPM_VERSION }}
+
+      # Bağımlılıkları yükle
+      - name: Install dependencies
+        run: pnpm install
+
+      # Kodları build et (Tüm projeler veya sadece hedef uygulama)
+      # Build all apps (or specific targets)
+      - name: Build all apps and libs
+        run: pnpm nx run-many --target=build --all --parallel=3
+
+      # (İsteğe bağlı) Testleri çalıştır
+      # Optionally run tests
+      - name: Run Tests
+        run: pnpm nx run-many --target=test --all --parallel=3
+
+      # Artifact'ları upload et (örneğin build çıktıları)
+      # Upload artifacts for later deployment or inspection
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-output
+          path: dist/
+
+      # (Opsiyonel) Firebase, Vercel, Docker, S3 gibi sistemlere deploy
+      # OPTIONAL: Replace this with your actual deploy target
+      - name: Deploy (example placeholder)
+        run: echo "🚀 Replace this step with your actual deployment command"

@@ -1,0 +1,29 @@
+name: 📚 Documentation Update / Dokümantasyon Güncelleme
+description: Dokümantasyonda eksik veya yanlışlık varsa buradan bildirin.
+title: "[DOCS] "
+labels: [documentation]
+assignees: []
+
+body:
+  - type: textarea
+    id: location
+    attributes:
+      label: 📍 Konum / Location of the issue
+      placeholder: Hangi dosyada, hangi başlıkta?
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 🧩 Problem / What is wrong?
+      placeholder: Eksik mi, eski mi, hatalı mı?
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 💡 Öneriniz / Suggestion
+      placeholder: Ne olmalıydı?
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📎 Ek bilgi / Additional context
