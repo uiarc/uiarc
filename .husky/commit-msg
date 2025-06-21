@@ -1,0 +1,15 @@
+#!/bin/sh
+# -------------------------------------------
+# Husky commit-msg hook
+# -------------------------------------------
+# Bu hook, commit mesajını commitlint ile kontrol eder.
+# Commit mesajının commitlint.config.js içindeki kurallara uygun olmasını sağlar.
+# Eğer commit mesajı kurallara uymazsa commit engellenir.
+#
+# This hook runs commitlint to validate commit message format
+# It ensures the commit message complies with rules defined in commitlint.config.js
+# Commit will be blocked if message doesn't comply.
+. "$(dirname "$0")/_/husky.sh"
+
+# commitlint'i çalıştırıyoruz, $1 commit mesajı dosyasını gösterir
+pnpm commitlint --edit "$1"

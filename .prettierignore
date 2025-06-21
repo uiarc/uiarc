@@ -1,5 +1,89 @@
-# Add files here to ignore them from prettier formatting
-/dist
-/coverage
-/.nx/cache
-/.nx/workspace-data
+########################################################################################
+# .prettierignore
+# English: List files and folders you want Prettier to ignore (not format).
+# Türkçe : Prettier’ın biçimlendirmesini istemediğiniz dosya ve klasörleri buraya yazın.
+########################################################################################
+
+# ------------------------------------------------------------------------------
+# Build outputs / Derlenmiş çıktı klasörleri
+# ------------------------------------------------------------------------------
+/dist               # English: Compiled output folder (e.g. Webpack, Vite, Next.js)
+                    # Türkçe : Derleme sonucu çıkan dosyalar (örn. Webpack, Vite)
+/build              # English: Alternative build folder used in some projects
+                    # Türkçe : Bazı projelerde kullanılan alternatif build dizini
+
+# ------------------------------------------------------------------------------
+# Test coverage outputs / Test kapsam raporları
+# ------------------------------------------------------------------------------
+/coverage           # English: Output folder for test coverage reports (Jest, Vitest)
+                    # Türkçe : Test kapsam raporlarının çıktısı (Jest, Vitest)
+
+# ------------------------------------------------------------------------------
+# NX monorepo cache / NX önbellek klasörleri
+# ------------------------------------------------------------------------------
+/.nx/cache          # English: NX temporary build cache folder
+                    # Türkçe : NX tarafından oluşturulan geçici önbellek dosyası
+/.nx/workspace-data # English: NX workspace metadata storage
+                    # Türkçe : NX’in proje bilgilerini sakladığı dizin
+
+# ------------------------------------------------------------------------------
+# Dependencies / Bağımlılıklar
+# ------------------------------------------------------------------------------
+node_modules        # English: Installed npm packages (should never be formatted)
+                    # Türkçe : Yüklenen paketler, kesinlikle biçimlendirilmemeli
+
+# ------------------------------------------------------------------------------
+# Environment files / Ortam dosyaları
+# ------------------------------------------------------------------------------
+.env                # English: Environment variables file
+                    # Türkçe : Ortam değişkenleri dosyası
+.env.local
+.env.*.local        # English: All environment-specific local env files
+                    # Türkçe : Tüm ortam bazlı `.env` dosyaları
+
+# ------------------------------------------------------------------------------
+# Lock files / Kilit dosyaları
+# ------------------------------------------------------------------------------
+package-lock.json   # English: NPM lock file – should not be touched
+                    # Türkçe : NPM bağımlılık kilit dosyası – dokunulmamalı
+yarn.lock
+pnpm-lock.yaml      # English: Alternative lock files (Yarn, PNPM)
+                    # Türkçe : Alternatif bağımlılık kilit dosyaları (Yarn, PNPM)
+
+# ------------------------------------------------------------------------------
+# Minified files / Küçültülmüş dosyalar
+# ------------------------------------------------------------------------------
+*.min.js            # English: Already minified JavaScript files
+                    # Türkçe : Küçültülmüş JavaScript dosyaları
+
+# ------------------------------------------------------------------------------
+# Logs and temp files / Loglar ve geçici dosyalar
+# ------------------------------------------------------------------------------
+*.log               # English: Log output files
+                    # Türkçe : Log (günlük) çıktıları
+*.tmp               # English: Temporary files
+                    # Türkçe : Geçici dosyalar
+
+# ------------------------------------------------------------------------------
+# Git-related files / Git ile ilgili dosyalar
+# ------------------------------------------------------------------------------
+.git                # English: Git internal folder
+                    # Türkçe : Git’in kendi iç yapısı
+.gitignore
+.gitattributes
+
+# ------------------------------------------------------------------------------
+# System files / Sistem tarafından oluşturulan dosyalar
+# ------------------------------------------------------------------------------
+.DS_Store           # English: macOS creates this automatically
+                    # Türkçe : macOS sisteminin otomatik oluşturduğu dosya
+Thumbs.db           # English: Windows image cache file
+                    # Türkçe : Windows sistem önbellek dosyası
+
+# ------------------------------------------------------------------------------
+# IDE and editor config folders / IDE ve editör yapılandırmaları
+# ------------------------------------------------------------------------------
+.vscode             # English: Visual Studio Code settings folder
+                    # Türkçe : VSCode ayar klasörü
+.idea               # English: JetBrains IDE project settings
+                    # Türkçe : JetBrains IDE ayar dosyaları

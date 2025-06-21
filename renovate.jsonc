@@ -1,0 +1,163 @@
+{
+  // ----------------------------------------
+  // Base configuration extension
+  // Renovate'in temel önerilen yapılandırmasını kullanıyoruz.
+  // This uses Renovate's recommended base configuration.
+  "extends": ["config:base"],
+
+  // ----------------------------------------
+  // General schedule configuration
+  // Güncellemelerin yapılacağı zaman dilimi ve zaman aralığı.
+  // Defines when updates are scheduled to run, respecting timezone.
+  "timezone": "Europe/Istanbul",  // Türkiye saat dilimi / Turkey timezone (UTC+3)
+
+  "schedule": [
+    "before 4am on monday"  // Haftada 1, Pazartesi sabah 4'ten önce çalıştırılır.
+                            // Runs weekly, before 4AM on Monday.
+  ],
+
+  // ----------------------------------------
+  // Package grouping and specific rules
+  // Paketleri gruplayıp, her grup için farklı kurallar tanımlıyoruz.
+  // Group packages and set custom rules for each group.
+  "packageRules": [
+    {
+      // Angular paketleri (örneğin @angular/core, @angular/router)
+      // Angular packages, e.g. @angular/core, @angular/router
+      "packagePatterns": ["^@angular/"],
+
+      "groupName": "Angular Packages",  // Güncellemeler Angular grubunda toplanır.
+                                        // Updates grouped under "Angular Packages"
+
+      "schedule": ["before 3am on sunday"],  // Bu grup için farklı zamanlama.
+                                             // Update before 3AM Sunday.
+
+      "automerge": false,               // Kritik paketlerde otomatik birleştirme kapalı.
+                                       // Disable auto-merge for critical packages.
+
+      "semanticCommits": "enabled"     // Semantic commit mesajları etkin.
+                                       // Enable semantic commit messages.
+    },
+    {
+      // React, MUI ve ilgili paketler
+      // React, MUI and related packages
+      "packagePatterns": ["^react", "^@mui/", "^react-dom"],
+
+      "groupName": "React & MUI Packages",
+
+      "schedule": ["before 4am on saturday"],
+
+      "automerge": true,                // Testler varsa otomatik birleştirme açık.
+                                      // Enable auto-merge if tests pass.
+
+      "semanticCommits": "enabled"
+    },
+    {
+      // Vue ekosistemi paketleri
+      // Vue ecosystem packages
+      "packagePatterns": ["^vue", "^vue-router", "^vuex", "^pinia"],
+
+      "groupName": "Vue Packages",
+
+      "schedule": ["before 5am on sunday"],
+
+      "automerge": false,
+      "semanticCommits": "enabled"
+    },
+    {
+      // Nx ve @nrwl paketleri (monorepo yönetimi için)
+      // Nx and @nrwl packages for monorepo management
+      "packagePatterns": ["^nx", "^@nrwl/"],
+
+      "groupName": "Nx Packages",
+
+      "schedule": ["before 3am on friday"],
+
+      "automerge": false
+    },
+    {
+      // Geliştirme araçları: eslint, prettier, typescript, jest, vitest gibi
+      // Development tooling packages: eslint, prettier, typescript, jest, vitest
+      "packagePatterns": ["eslint", "prettier", "typescript", "jest", "vitest"],
+
+      "groupName": "Dev Tooling Packages",
+
+      "schedule": ["before 6am on saturday"],
+
+      "automerge": true
+    },
+    {
+      // Test ve lint eklentileri (testing-library, eslint-plugin vb.)
+      // Testing and lint plugins (testing-library, eslint-plugin, etc.)
+      "packagePatterns": ["^@testing-library/", "^eslint-plugin-"],
+
+      "groupName": "Testing & Lint Packages",
+
+      "schedule": ["before 6am on saturday"],
+
+      "automerge": true
+    }
+  ],
+
+  // ----------------------------------------
+  // Global auto-merge and PR rate limits
+  // Otomatik birleştirme ve PR açma limitleri
+  "automerge": true,               // Genel otomatik merge izni (paket bazında engellenebilir)
+                                  // Global auto-merge allowed, but can be overridden per package group.
+
+  "automergeType": "pr",           // PR açıldıktan sonra otomatik merge yapılır
+                                  // Auto-merge occurs after PR creation.
+
+  "prConcurrentLimit": 6,          // Aynı anda en fazla 6 PR açık olabilir.
+                                  // Max 6 concurrent PRs at once.
+
+  "prHourlyLimit": 3,              // Saatte en fazla 3 PR açılabilir.
+                                  // Max 3 PRs opened per hour.
+
+  // ----------------------------------------
+  // Ignore packages and paths
+  // Güncellenmeyecek paketler ve klasörler
+  "ignoreDeps": [
+    "some-legacy-package",         // Eski, kritik veya elle yönetilen paketler
+                                  // Legacy or manually managed packages.
+
+    "left-pad"                    // Örnek amaçlı, dikkatli güncelleme gerekebilir
+                                  // Example package requiring cautious updates.
+  ],
+
+  "ignorePaths": [
+    "docs/**",                    // Dokümantasyon klasörü güncellemelerden hariç
+                                  // Documentation folder excluded from updates.
+
+    "scripts/**",                 // Yardımcı scriptler dışlanır
+                                  // Helper scripts folder ignored.
+
+    "tools/**"                   // Araçlar klasörü güncellenmez
+                                  // Tools folder ignored.
+  ],
+
+  // ----------------------------------------
+  // Pull request etiketi ve commit mesajı ayarları
+  // PR labeling and commit message formatting
+  "labels": ["dependencies", "renovate"],  // PR'lara eklenecek etiketler
+                                            // Labels added to PRs.
+
+  "semanticCommits": "enabled",             // Semantic commit mesajları aktif
+                                            // Enable semantic commit messages.
+
+  "commitMessageAction": "update",          // Commit mesajında yapılan değişikliğin türü
+                                            // Type of change in commit message.
+
+  "commitMessageTopic": "dependencies",     // Commit mesajında konu başlığı
+                                            // Commit message topic.
+
+  // ----------------------------------------
+  // Ekstra özellikler
+  // Additional features
+
+  "dependencyDashboard": true,               // Renovate Dashboard ile PR’ları merkezi yönetim
+                                             // Enable Renovate Dependency Dashboard for central management.
+
+  "packageStatusChecks": true                 // PR'ların CI durum kontrolü aktif
+                                             // Enable status checks on PRs (CI checks).
+}

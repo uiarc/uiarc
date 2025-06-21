@@ -1,0 +1,12 @@
+#!/bin/sh
+# -------------------------------------------
+# Husky pre-commit hook
+# -------------------------------------------
+# Commit öncesinde değişen dosyalarda lint ve prettier otomatik çalıştırılır.
+# Böylece kod kalitesi ve formatı korunur.
+#
+# This hook runs lint and prettier on staged files before commit,
+# ensuring code quality and formatting standards.
+. "$(dirname "$0")/_/husky.sh"
+
+pnpm lint-staged
