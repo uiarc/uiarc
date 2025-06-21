@@ -1,0 +1,192 @@
+# ------------------------------
+# EditorConfig genel ayarları / General EditorConfig Settings
+# ------------------------------
+
+# root=true ise bu dosya en üst konfigürasyondur,
+# bu sayede proje dizin ağacında yukarıya doğru başka .editorconfig dosyası aramayı durdurur.
+# Bu, özellikle birden fazla proje veya modülün olduğu büyük repo yapılarında önemli.
+# If root=true, this file is treated as the top-level configuration,
+# preventing EditorConfig from searching parent directories for other config files.
+# Useful in monorepos or large projects with multiple modules.
+root = true
+
+# ----------------------------------------------------
+# Tüm dosyalar için genel kurallar (global ayarlar) / Global rules for all files
+# ----------------------------------------------------
+[*]
+
+# Girintilerde boşluk mu kullanılacak yoksa tab mı?  
+# Kodun okunabilirliği ve tutarlılığı için çok önemlidir.  
+# Farklı projelerde farklı standartlar olabilir (ör: Python genelde space, Makefile tab ister).  
+# Use spaces or tabs for indentation?  
+# This affects code readability and consistency.  
+# Different languages/projects may have different conventions (e.g. Python prefers spaces, Makefiles require tabs).
+indent_style = space
+
+# Girintinin kaç boşluk genişliğinde olacağı  
+# Kodun hizalanması ve okunması açısından standart olmalıdır.  
+# Çok büyük veya çok küçük değerler okunabilirliği zorlaştırabilir.  
+# Number of spaces per indentation level  
+# Standard indentation width helps code alignment and readability.  
+# Too many or too few spaces can make code harder to read.
+indent_size = 2
+
+# Dosyaların satır sonlarında hangi karakterin kullanılacağı  
+# Linux/Unix sistemlerde LF (Line Feed), Windows'da CRLF (Carriage Return + Line Feed) kullanılır.  
+# Projelerde bu tutarlı olmalı, aksi halde versiyon kontrolünde gereksiz değişiklikler olur.  
+# End of line character: LF = Linux/Unix style, CRLF = Windows style  
+# Consistency here prevents unwanted diffs and tool conflicts.
+end_of_line = lf
+
+# Dosya karakter kodlaması  
+# UTF-8 günümüzde en yaygın kullanılan ve çok dilli karakterleri destekleyen kodlamadır.  
+# Latin1 veya diğer kodlamalar ise özel durumlar için tercih edilir.  
+# File character encoding  
+# UTF-8 is the most common and supports many languages/symbols.  
+# Other encodings like Latin1 are used in legacy systems or special cases.
+charset = utf-8
+
+# Satır sonundaki boşlukları otomatik siler (true/false)  
+# Fazladan boşluklar kodun temizliğini bozar, merge çatışmalarına neden olabilir.  
+# Ancak bazı durumlarda (ör. Markdown’da) bırakmak gerekebilir.  
+# Automatically trim trailing whitespace at end of lines  
+# Extra trailing whitespace pollutes code, causes merge conflicts, so usually trimmed.  
+# Exceptions exist, e.g., Markdown files.
+trim_trailing_whitespace = true
+
+# Dosyanın sonuna boş bir yeni satır ekler (true/false)  
+# POSIX standartlarında dosya sonunda yeni satır olması önerilir.  
+# Bazı derleyiciler ve araçlar bu satırın olmamasına tepki verebilir.  
+# Ensure file ends with a newline  
+# POSIX recommends a newline at EOF.  
+# Some compilers/tools expect it.
+insert_final_newline = true
+
+# ----------------------------------------------------
+# JSON dosyaları için özel ayarlar / Specific rules for JSON files
+# ----------------------------------------------------
+[*.json]
+
+# JSON dosyalarında genelde 2 boşluk girinti kullanılır,  
+# çünkü JSON formatı okunabilirlik için sık sık insan tarafından düzenlenir.  
+# Commonly use 2 spaces for JSON indentation  
+# JSON is often hand-edited; 2 spaces improve readability.
+indent_size = 2
+
+# JSON genelde UTF-8 encoding ile yazılır  
+# Standart JSON kodlama UTF-8’dir ve tüm modern araçlar destekler.  
+# JSON files usually use UTF-8 encoding  
+# Standard encoding; all modern parsers support UTF-8.
+charset = utf-8
+
+# ----------------------------------------------------
+# Markdown dosyaları için özel ayarlar / Specific rules for Markdown files
+# ----------------------------------------------------
+[*.md]
+
+# Markdown dosyalarında boşluk kırpmayı kapatıyoruz çünkü bazı markdown linter’ları bu boşluklara ihtiyaç duyar.  
+# Örneğin satır sonu çift boşluk satır sonu kırılmasını sağlar.  
+# Do not trim trailing whitespace in Markdown (some linters require it)  
+# Trailing spaces can be meaningful in Markdown for line breaks.
+trim_trailing_whitespace = false
+
+# Markdown dosyalarında genelde tab genişliği 2 olarak kullanılır  
+# Çünkü Markdown genelde 2 boşluk girintili yapıya alışkındır.  
+# Usually 2 spaces indentation in Markdown files  
+# Common convention for Markdown files.
+indent_size = 2
+
+# Satır sonu LF kullanılır  
+# Platformlar arası tutarlılık için.  
+# Use LF line endings  
+# For cross-platform consistency.
+end_of_line = lf
+
+# ----------------------------------------------------
+# YAML dosyaları için özel ayarlar / Specific rules for YAML files
+# ----------------------------------------------------
+[*.{yml,yaml}]
+
+# YAML’da girinti boşluk olmalı, tab kullanımı hata verir.  
+# Bu yüzden indent_style space olarak kalmalı.  
+indent_style = space
+
+indent_size = 2
+charset = utf-8
+end_of_line = lf
+
+# Trailing whitespace temizlenmeli, aksi halde parser hatası olabilir.  
+trim_trailing_whitespace = true
+
+# Dosya sonunda yeni satır zorunlu değil ama önerilir.  
+insert_final_newline = true
+
+# ----------------------------------------------------
+# Shell script dosyaları için özel ayarlar / Specific rules for Shell scripts
+# ----------------------------------------------------
+[*.sh]
+
+# Shell scriptlerde girinti olarak tab kullanımı yaygındır.  
+# Bash script ve Makefile gibi dosyalarda tab kullanımı daha yaygındır.  
+indent_style = tab          # Shell scripts commonly use tabs
+
+# Tab genişliği genelde 4 boşluk kabul edilir.  
+indent_size = 4
+
+charset = utf-8
+end_of_line = lf
+
+# Trailing whitespace silinmeli, temiz kod için.  
+trim_trailing_whitespace = true
+
+# Dosya sonunda boş satır olmalı.  
+insert_final_newline = true
+
+# ----------------------------------------------------
+# Makefile dosyaları için özel ayarlar / Specific rules for Makefiles
+# ----------------------------------------------------
+[Makefile]
+
+# Makefile’da tab kullanımı zorunludur, aksi halde hata verir.  
+indent_style = tab          # Tabs mandatory in Makefiles
+
+# Trailing whitespace önemli olabilir, silme.  
+trim_trailing_whitespace = false  
+
+end_of_line = lf
+
+# ----------------------------------------------------
+# C, C++, JavaScript, TypeScript, CSS, SCSS vb. dosyalar için ortak ayarlar
+# Common rules for C, C++, JS, TS, CSS, SCSS, etc.
+# ----------------------------------------------------
+[*.{c,cpp,h,hpp,js,ts,jsx,tsx,css,scss,sass,less}]
+
+# Boşluk ile girinti yapılır, genelde 2 boşluk tercih edilir.  
+indent_style = space  
+indent_size = 2  
+
+charset = utf-8  
+end_of_line = lf  
+
+# Kodun sonunda fazladan boşluk kalmasın diye temizlenir.  
+trim_trailing_whitespace = true  
+
+# Dosya sonunda mutlaka yeni satır bırakılır.  
+insert_final_newline = true  
+
+# ----------------------------------------------------
+# XML ve HTML dosyaları için ayarlar / Rules for XML and HTML files
+# ----------------------------------------------------
+[*.{xml,html,htm}]
+
+indent_style = space  
+indent_size = 2  
+
+charset = utf-8  
+end_of_line = lf  
+
+# Fazla boşluklar temizlenir.  
+trim_trailing_whitespace = true  
+
+# Dosya sonunda yeni satır.  
+insert_final_newline = true
